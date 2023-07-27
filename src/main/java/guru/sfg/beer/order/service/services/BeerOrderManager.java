@@ -2,6 +2,7 @@ package guru.sfg.beer.order.service.services;
 
 import guru.sfg.beer.order.service.domain.BeerOrder;
 import guru.sfg.brewery.model.BeerOrderDto;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -14,13 +15,16 @@ public interface BeerOrderManager {
 
     void processValidationResult(UUID beerOrderId, Boolean isValid);
 
+    @Transactional
+    void processDeliveryResult(UUID beerOrderId, Boolean isDelivered);
+
     void beerOrderAllocationPassed(BeerOrderDto beerOrder);
 
     void beerOrderAllocationPendingInventory(BeerOrderDto beerOrder);
 
     void beerOrderAllocationFailed(BeerOrderDto beerOrder);
 
-    void beerOrderPickedUp(UUID id);
+    void beerOrderDelivered(UUID id);
 
     void cancelOrder(UUID id);
 }

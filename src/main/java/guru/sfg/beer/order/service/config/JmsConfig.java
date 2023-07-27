@@ -19,6 +19,10 @@ public class JmsConfig {
     public static final String ALLOCATE_FAILURE_QUEUE = "allocation-failure";
     public static final String DEALLOCATE_ORDER_QUEUE = "deallocate-order" ;
 
+    public static final String START_ORDER_DELIVERY_QUEUE = "start-order-delivery" ;
+
+    public static final String ORDER_DELIVERY_RESULT = "order-delivery-result";
+
     @Bean // Serialize message content to json using TextMessage
     public MessageConverter jacksonJmsMessageConverter(ObjectMapper objectMapper) {
         MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();

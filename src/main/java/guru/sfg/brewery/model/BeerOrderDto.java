@@ -53,4 +53,5 @@ public class BeerOrderDto {
     private List<BeerOrderLineDto> beerOrderLines;
     private String orderStatus;
     private String orderStatusCallbackUrl;
+    private UUID deliveryTypeId;
 }

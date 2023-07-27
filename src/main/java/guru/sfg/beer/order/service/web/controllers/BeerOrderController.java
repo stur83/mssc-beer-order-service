@@ -66,9 +66,9 @@ public class BeerOrderController {
         return beerOrderService.getOrderById(customerId, orderId);
     }
 
-    @PutMapping("/orders/{orderId}/pickup")
+    @PutMapping("/orders/{orderId}/delivery")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void pickupOrder(@PathVariable("customerId") UUID customerId, @PathVariable("orderId") UUID orderId){
-        beerOrderService.pickupOrder(customerId, orderId);
+    public void deliveryOrder(@PathVariable("customerId") UUID customerId, @PathVariable("orderId") UUID orderId){
+        beerOrderService.orderDelivered(customerId, orderId);
     }
 }

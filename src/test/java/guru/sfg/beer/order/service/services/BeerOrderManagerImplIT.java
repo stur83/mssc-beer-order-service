@@ -97,7 +97,7 @@ public class BeerOrderManagerImplIT {
         await().untilAsserted(() -> {
             BeerOrder foundOrder = beerOrderRepository.findById(beerOrder.getId()).get();
 
-            assertEquals(BeerOrderStatusEnum.ALLOCATED, foundOrder.getOrderStatus());
+            assertEquals(BeerOrderStatusEnum.IN_DELIVERY, foundOrder.getOrderStatus());
         });
 
         await().untilAsserted(() -> {
@@ -109,7 +109,7 @@ public class BeerOrderManagerImplIT {
         BeerOrder savedBeerOrder2 = beerOrderRepository.findById(savedBeerOrder.getId()).get();
 
         assertNotNull(savedBeerOrder2);
-        assertEquals(BeerOrderStatusEnum.ALLOCATED, savedBeerOrder2.getOrderStatus());
+        assertEquals(BeerOrderStatusEnum.IN_DELIVERY, savedBeerOrder2.getOrderStatus());
         savedBeerOrder2.getBeerOrderLines().forEach(line -> {
             assertEquals(line.getOrderQuantity(), line.getQuantityAllocated());
         });
@@ -147,10 +147,10 @@ public class BeerOrderManagerImplIT {
 
         await().untilAsserted(() -> {
             BeerOrder foundOrder = beerOrderRepository.findById(beerOrder.getId()).get();
-            assertEquals(BeerOrderStatusEnum.ALLOCATED, foundOrder.getOrderStatus());
+            assertEquals(BeerOrderStatusEnum.IN_DELIVERY, foundOrder.getOrderStatus());
         });
 
-        beerOrderManager.beerOrderPickedUp(savedBeerOrder.getId());
+        beerOrderManager.beerOrderDelivered(savedBeerOrder.getId());
 
         await().untilAsserted(() -> {
             BeerOrder foundOrder = beerOrderRepository.findById(beerOrder.getId()).get();
@@ -266,7 +266,7 @@ public class BeerOrderManagerImplIT {
 
         await().untilAsserted(() -> {
             BeerOrder foundOrder = beerOrderRepository.findById(beerOrder.getId()).get();
-            assertEquals(BeerOrderStatusEnum.ALLOCATED, foundOrder.getOrderStatus());
+            assertEquals(BeerOrderStatusEnum.IN_DELIVERY, foundOrder.getOrderStatus());
         });
 
         beerOrderManager.cancelOrder(savedBeerOrder.getId());

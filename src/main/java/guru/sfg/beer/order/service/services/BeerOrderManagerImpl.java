@@ -70,6 +70,22 @@ public class BeerOrderManagerImpl implements BeerOrderManager {
         }, () -> log.error("Order Not Found. Id: " + beerOrderId));
     }
 
+    @Transactional
+    @Override
+    public void processDeliveryResult(UUID beerOrderId, Boolean isDelivered) {
+        log.debug("Process Delivery Result for beerOrderId: " + beerOrderId + " Delivered? " + isDelivered);
+
+        Optional<BeerOrder> beerOrderOptional = beerOrderRepository.findById(beerOrderId);
+
+        beerOrderOptional.ifPresentOrElse(beerOrder -> {
+            if(isDelivered){
+                sendBeerOrderEvent(beerOrder, BeerOrderEventEnum.DELIVERED);
+            } else {
+                sendBeerOrderEvent(beerOrder, BeerOrderEventEnum.DELIVERY_FAILED);
+            }
+        }, () -> log.error("Order Not Found. Id: " + beerOrderId));
+    }
+
     @Override
     public void beerOrderAllocationPassed(BeerOrderDto beerOrderDto) {
         Optional<BeerOrder> beerOrderOptional = beerOrderRepository.findById(beerOrderDto.getId());
@@ -78,6 +94,7 @@ public class BeerOrderManagerImpl implements BeerOrderManager {
             sendBeerOrderEvent(beerOrder, BeerOrderEventEnum.ALLOCATION_SUCCESS);
             awaitForStatus(beerOrder.getId(), BeerOrderStatusEnum.ALLOCATED);
             updateAllocatedQty(beerOrderDto);
+            sendBeerOrderEvent(beerOrder, BeerOrderEventEnum.START_DELIVERY);
         }, () -> log.error("Order Id Not Found: " + beerOrderDto.getId() ));
     }
 
@@ -120,12 +137,12 @@ public class BeerOrderManagerImpl implements BeerOrderManager {
     }
 
     @Override
-    public void beerOrderPickedUp(UUID id) {
+    public void beerOrderDelivered(UUID id) {
         Optional<BeerOrder> beerOrderOptional = beerOrderRepository.findById(id);
 
         beerOrderOptional.ifPresentOrElse(beerOrder -> {
             //do process
-            sendBeerOrderEvent(beerOrder, BeerOrderEventEnum.BEERORDER_PICKED_UP);
+            sendBeerOrderEvent(beerOrder, BeerOrderEventEnum.DELIVERED);
         }, () -> log.error("Order Not Found. Id: " + id));
     }
 

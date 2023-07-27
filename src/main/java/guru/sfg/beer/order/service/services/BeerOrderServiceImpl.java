@@ -96,8 +96,8 @@ public class BeerOrderServiceImpl implements BeerOrderService {
     }
 
     @Override
-    public void pickupOrder(UUID customerId, UUID orderId) {
-        beerOrderManager.beerOrderPickedUp(orderId);
+    public void orderDelivered(UUID customerId, UUID orderId) {
+        beerOrderManager.beerOrderDelivered(orderId);
     }
 
     private BeerOrder getOrder(UUID customerId, UUID orderId){
