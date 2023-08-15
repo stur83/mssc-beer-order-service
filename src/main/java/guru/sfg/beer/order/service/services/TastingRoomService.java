@@ -24,6 +24,7 @@ public class TastingRoomService {
     private final BeerOrderService beerOrderService;
     private final BeerOrderRepository beerOrderRepository;
     private final List<String> beerUpcs = new ArrayList<>(3);
+    private final List<String> deliveryCodes = new ArrayList<>(3);
 
     public TastingRoomService(CustomerRepository customerRepository, BeerOrderService beerOrderService,
                               BeerOrderRepository beerOrderRepository) {
@@ -34,10 +35,13 @@ public class TastingRoomService {
         beerUpcs.add(BeerOrderBootStrap.BEER_1_UPC);
         beerUpcs.add(BeerOrderBootStrap.BEER_2_UPC);
         beerUpcs.add(BeerOrderBootStrap.BEER_3_UPC);
+
+        deliveryCodes.add(BeerOrderBootStrap.DELIVERY_UPC_CODE);
+        deliveryCodes.add(BeerOrderBootStrap.DELIVERY_IN_POST_CODE);
     }
 
     @Transactional
-    @Scheduled(fixedRate = 2000) //run every 2 seconds
+    @Scheduled(fixedRate = 10000) //run every 2 seconds
     public void placeTastingRoomOrder(){
 
         List<Customer> customerList = customerRepository.findAllByCustomerNameLike(BeerOrderBootStrap.TASTING_ROOM);
@@ -53,6 +57,7 @@ public class TastingRoomService {
 
     private void doPlaceOrder(Customer customer) {
         String beerToOrder = getRandomBeerUpc();
+        String deliveryCode = getRandomDeliveryCode();
 
         BeerOrderLineDto beerOrderLine = BeerOrderLineDto.builder()
                 .upc(beerToOrder)
@@ -65,6 +70,7 @@ public class TastingRoomService {
         BeerOrderDto beerOrder = BeerOrderDto.builder()
                 .customerId(customer.getId())
                 .customerRef(UUID.randomUUID().toString())
+                .deliveryCode(deliveryCode)
                 .beerOrderLines(beerOrderLineSet)
                 .build();
 
@@ -73,6 +79,9 @@ public class TastingRoomService {
     }
 
     private String getRandomBeerUpc() {
-        return beerUpcs.get(new Random().nextInt(beerUpcs.size() -0));
+        return beerUpcs.get(new Random().nextInt(beerUpcs.size()));
+    }
+    private String getRandomDeliveryCode() {
+        return deliveryCodes.get(new Random().nextInt(deliveryCodes.size()));
     }
 }

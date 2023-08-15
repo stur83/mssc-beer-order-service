@@ -39,6 +39,7 @@ public class StartOrderDeliveryAction implements Action<BeerOrderStatusEnum, Bee
                     jmsTemplate.convertAndSend(JmsConfig.START_ORDER_DELIVERY_QUEUE,
                             DeliveryOrderRequest.builder()
                                     .beerOrderId(beerOrder.getId())
+                                    .deliveryTypeCode(beerOrder.getDeliveryCode())
                                     .deliveryStartDate(dateMapper.asOffsetDateTime(beerOrder.getCreatedDate()))
                             .build());
                     log.debug("Sent Delivery Request for order id: " + beerOrderId);

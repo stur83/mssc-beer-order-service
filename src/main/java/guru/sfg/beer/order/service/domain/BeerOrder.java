@@ -25,6 +25,7 @@ import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.Set;
 import java.util.UUID;
@@ -41,13 +42,14 @@ public class BeerOrder extends BaseEntity {
     @Builder
     public BeerOrder(UUID id, Long version, Timestamp createdDate, Timestamp lastModifiedDate, String customerRef, Customer customer,
                      Set<BeerOrderLine> beerOrderLines, BeerOrderStatusEnum orderStatus,
-                     String orderStatusCallbackUrl) {
+                     String orderStatusCallbackUrl, String deliveryCode) {
         super(id, version, createdDate, lastModifiedDate);
         this.customerRef = customerRef;
         this.customer = customer;
         this.beerOrderLines = beerOrderLines;
         this.orderStatus = orderStatus;
         this.orderStatusCallbackUrl = orderStatusCallbackUrl;
+        this.deliveryCode = deliveryCode;
     }
 
     private String customerRef;
@@ -59,7 +61,9 @@ public class BeerOrder extends BaseEntity {
     @Fetch(FetchMode.JOIN)
     private Set<BeerOrderLine> beerOrderLines;
 
+    @Enumerated(EnumType.STRING)
     private BeerOrderStatusEnum orderStatus = BeerOrderStatusEnum.NEW;
     private String orderStatusCallbackUrl;
-    private UUID deliveryTypeId;
+    @NotNull
+    private String deliveryCode;
 }

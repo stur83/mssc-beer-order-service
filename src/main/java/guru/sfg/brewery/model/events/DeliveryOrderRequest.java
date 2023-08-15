@@ -21,6 +21,8 @@ public class DeliveryOrderRequest {
 
     private UUID beerOrderId;
 
+    private String deliveryTypeCode;
+
     @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ssZ", shape=JsonFormat.Shape.STRING)
     @JsonProperty("deliveryStartDate")
     private OffsetDateTime deliveryStartDate = null;

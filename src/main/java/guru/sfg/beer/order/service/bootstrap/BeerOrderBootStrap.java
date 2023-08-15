@@ -21,6 +21,9 @@ public class BeerOrderBootStrap implements CommandLineRunner {
     public static final String BEER_2_UPC = "0631234300019";
     public static final String BEER_3_UPC = "0083783375213";
 
+    public static final String DELIVERY_UPC_CODE = "12345678";
+    public static final String DELIVERY_IN_POST_CODE = "12345679";
+
     private final CustomerRepository customerRepository;
 
     @Override
