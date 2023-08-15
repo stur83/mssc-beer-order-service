@@ -2,6 +2,7 @@ package guru.sfg.beer.order.service.services;
 
 import guru.sfg.beer.order.service.domain.BeerOrder;
 import guru.sfg.brewery.model.BeerOrderDto;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
@@ -25,6 +26,9 @@ public interface BeerOrderManager {
     void beerOrderAllocationFailed(BeerOrderDto beerOrder);
 
     void beerOrderDelivered(UUID id);
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    void scheduleOrderDelivery(UUID id);
 
     void cancelOrder(UUID id);
 }

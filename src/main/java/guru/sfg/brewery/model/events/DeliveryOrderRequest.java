@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
@@ -19,11 +20,12 @@ import java.util.UUID;
 @Builder
 public class DeliveryOrderRequest {
 
-    private UUID beerOrderId;
-
-    private String deliveryTypeCode;
+    @NotNull
+    private UUID orderId;
 
     @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ssZ", shape=JsonFormat.Shape.STRING)
     @JsonProperty("deliveryStartDate")
-    private OffsetDateTime deliveryStartDate = null;
+    private OffsetDateTime orderDate;
+
+    private String deliveryTypeCode;
 }

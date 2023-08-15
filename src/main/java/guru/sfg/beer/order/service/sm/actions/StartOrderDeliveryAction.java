@@ -38,9 +38,9 @@ public class StartOrderDeliveryAction implements Action<BeerOrderStatusEnum, Bee
         beerOrderOptional.ifPresentOrElse(beerOrder -> {
                     jmsTemplate.convertAndSend(JmsConfig.START_ORDER_DELIVERY_QUEUE,
                             DeliveryOrderRequest.builder()
-                                    .beerOrderId(beerOrder.getId())
+                                    .orderId(beerOrder.getId())
                                     .deliveryTypeCode(beerOrder.getDeliveryCode())
-                                    .deliveryStartDate(dateMapper.asOffsetDateTime(beerOrder.getCreatedDate()))
+                                    .orderDate(dateMapper.asOffsetDateTime(beerOrder.getCreatedDate()))
                             .build());
                     log.debug("Sent Delivery Request for order id: " + beerOrderId);
                 }, () -> log.error("Beer Order Not Found!"));
